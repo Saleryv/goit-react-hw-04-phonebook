@@ -1,37 +1,37 @@
-import { Component } from 'react';
+import { useState } from 'react';
+
 import css from './ContactForm.module.css';
 import PropTypes from 'prop-types';
 
-export class ContactForm extends Component {
-  state = {
+export const ContactForm = ({ contactAdd }) => {
+  const [formData, setFormData] = useState({
     name: '',
     number: '',
-  };
+  });
 
-  change = e => {
+   const change = e => {
     const { name, value } = e.target;
-    this.setState({
+    setFormData(prevState => ({
+      ...prevState,
       [name]: value,
-    });
+    }));
   };
 
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
-    this.props.contactAdd(this.state);
-    this.reset();
+    contactAdd(formData);
+    reset();
   };
 
 
-  reset = () => {
-    this.setState({
+  const reset = () => {
+    setFormData({
       name: '',
       number: '',
     });
   };
 
-  render() {
-    const { name, number } = this.state;
-    const { onSubmit, change } = this;
+  const { name, number } = formData;
 
     return (
       <form onSubmit={onSubmit} className={css.section}>
@@ -67,7 +67,7 @@ export class ContactForm extends Component {
       </form>
     );
   }
-}
+
 
 ContactForm.propTypes = {
   contactAdd: PropTypes.func.isRequired,
